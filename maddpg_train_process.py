@@ -171,11 +171,6 @@ def train(sess,env,args,actors,critics,noise):
 				action_dims_done = action_dims_done + actor.action_dim
 			episode_reward += r
 			shared_episode_reward += shared_r
-		
-		# --------------- print removed ----------------
-		# for k in range(env.n):
-		# 	print("\ndeq_adl_after ep", env.agents[k].deq_adl, "\n\ndeq_unalloc", env.agents[k].deq_for_unalloc)
-		# --------------- print removed ----------------
 
 		if ep%10==0:
 			for k in range(env.n):
@@ -183,16 +178,16 @@ def train(sess,env,args,actors,critics,noise):
 				summary_str = sess.run(summary_ops, feed_dict = {summary_vars[0]: episode_reward[0], summary_vars[1]: episode_reward[1], summary_vars[2]: episode_reward[2], summary_vars[3]: episode_reward[3], summary_vars[4]: shared_episode_reward[0], summary_vars[5]: len(env.agents[k].deq_for_unalloc[0]), summary_vars[6]: len(env.agents[k].deq_for_unalloc[1]), summary_vars[7]: len(env.agents[k].deq_for_unalloc[2]), summary_vars[8]: len(env.agents[k].deq_for_unalloc[3])})
 				writer.add_summary(summary_str,ep)
 				writer.flush()
-				#print ('|Reward: {:d}| Episode: {:d}| Qmax: {:.4f}'.format(int(episode_reward),ep,(episode_av_max_q/float(stp))))
+
 				print("\ndeq_adl_after ep", env.agents[k].deq_adl, "\n\ndeq_unalloc", env.agents[k].deq_for_unalloc)
 				print ('|Reward: {} | Shared Reward: {}	| Episode: {:d} '.format(episode_reward,shared_episode_reward,ep))
-			#print(done)
+
 			if ep == int(args['max_episodes']): # np.all(done):
-				#summary_str = sess.run(summary_ops, feed_dict = {summary_vars[0]: episode_reward, summary_vars[1]: episode_av_max_q/float(stp)})
+
 				summary_str = sess.run(summary_ops, feed_dict = {summary_vars[0]: episode_reward[0], summary_vars[1]: episode_reward[3]})
 				writer.add_summary(summary_str,ep)
 				writer.flush()
-				#print ('|Reward: {:d}| Episode: {:d}| Qmax: {:.4f}'.format(int(episode_reward),ep,(episode_av_max_q/float(stp))))
+
 				print ('|Reward: {}	| Episode: {:d}'.format(episode_reward,ep))
 				break
 
